@@ -10,23 +10,57 @@ export class ContentSanitizer {
 	static sanitizeContent(content: string, settings: AutoLinkSettings): string {
 		let sanitized = content;
 
+		// Optionally remove frontmatter (YAML headers)
+		if (settings.excludeFrontmatter) {
+			// Match frontmatter at the start of the file: ---\n...\n---\n
+			// Replace with spaces to preserve positions for later link insertion
+			sanitized = sanitized.replace(/^---\s*\n[\s\S]*?\n---\s*\n/m, (match) => {
+				return ' '.repeat(match.length);
+			});
+		}
+
+		// Optionally remove headings
+		if (settings.excludeHeadings) {
+			// Match markdown headings: # Title, ## Title, etc.
+			// Replace with spaces to preserve positions
+			sanitized = sanitized.replace(/^#{1,6}\s+.+$/gm, (match) => {
+				return ' '.repeat(match.length);
+			});
+		}
+
 		// Remove existing wiki links [[...]]
-		sanitized = sanitized.replace(/\[\[.*?\]\]/g, '');
+		// Handles: [[Link]], [[Link|Alias]], [[Link#Heading]], [[Link#Heading|Alias]]
+		// Replace with spaces to preserve positions and prevent re-linking inside links
+		sanitized = sanitized.replace(/\[\[([^\[\]]+)\]\]/g, (match) => {
+			return ' '.repeat(match.length);
+		});
 
 		// Remove existing markdown links [text](url)
-		sanitized = sanitized.replace(/\[.*?\]\(.*?\)/g, '');
+		// Replace with spaces to preserve positions and prevent re-linking
+		sanitized = sanitized.replace(/\[([^\[\]]+)\]\(([^)]+)\)/g, (match) => {
+			return ' '.repeat(match.length);
+		});
 
 		// Optionally remove code blocks
 		if (settings.excludeCodeBlocks) {
 			// Remove code fences ```...```
-			sanitized = sanitized.replace(/```[\s\S]*?```/g, '');
+			// Replace with spaces to preserve positions
+			sanitized = sanitized.replace(/```[\s\S]*?```/g, (match) => {
+				return ' '.repeat(match.length);
+			});
 			// Remove inline code `...`
-			sanitized = sanitized.replace(/`[^`]+`/g, '');
+			// Replace with spaces to preserve positions
+			sanitized = sanitized.replace(/`[^`]+`/g, (match) => {
+				return ' '.repeat(match.length);
+			});
 		}
 
 		// Optionally remove URLs
 		if (settings.excludeUrls) {
-			sanitized = sanitized.replace(/https?:\/\/[^\s]+/g, '');
+			// Replace with spaces to preserve positions
+			sanitized = sanitized.replace(/https?:\/\/[^\s]+/g, (match) => {
+				return ' '.repeat(match.length);
+			});
 		}
 
 		return sanitized;

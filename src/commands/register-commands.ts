@@ -210,16 +210,10 @@ async function scanCurrentNote(
 	const scanner = new NoteScanner(plugin.app, plugin.settings);
 	const finder = new LinkFinder(plugin.app, plugin.settings);
 
-	// Get the file
-	const file = plugin.app.vault.getAbstractFileByPath(filePath);
-	if (!file || !(file instanceof plugin.app.vault.adapter.constructor)) {
-		new Notice('❌ File not found');
-		return;
-	}
-
+	// Get the current markdown file
 	const currentFile = plugin.app.vault.getMarkdownFiles().find(f => f.path === filePath);
 	if (!currentFile) {
-		new Notice('❌ Not a markdown file');
+		new Notice('❌ File not found or not a markdown file');
 		return;
 	}
 

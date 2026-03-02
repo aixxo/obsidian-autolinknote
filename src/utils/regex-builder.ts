@@ -47,9 +47,12 @@ export class RegexBuilder {
 		// Sort by length (longest first) to prioritize longer matches
 		patterns.sort((a, b) => b.length - a.length);
 
-		// Build regex with word boundaries
-		// Using capturing groups to get the actual match
-		const pattern = patterns.map(p => `\\b(${p})\\b`).join('|');
+		// Build regex with Unicode-aware word boundaries
+		// \\b doesn't work correctly with Unicode characters (umlauts, accents, etc.)
+		// Instead, use negative lookahead/lookbehind to prevent matching within words
+		// Character class includes: ASCII, German umlauts, and extended Latin characters
+		const wordChar = '[a-zA-Z0-9äöüÄÖÜßà-ÿÀ-ÖØ-öø-ÿ_]';
+		const pattern = patterns.map(p => `(?<!${wordChar})(${p})(?!${wordChar})`).join('|');
 
 		// Create regex with appropriate flags
 		const flags = settings.caseSensitive ? 'g' : 'gi';

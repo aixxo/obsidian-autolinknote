@@ -75,6 +75,28 @@ export class AutoLinkSettingTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				}));
 
+		// Exclude Frontmatter
+		new Setting(containerEl)
+			.setName('Exclude frontmatter')
+			.setDesc('Do not match text inside YAML frontmatter headers')
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.excludeFrontmatter)
+				.onChange(async (value) => {
+					this.plugin.settings.excludeFrontmatter = value;
+					await this.plugin.saveSettings();
+				}));
+
+		// Exclude Headings
+		new Setting(containerEl)
+			.setName('Exclude headings')
+			.setDesc('Do not match text inside markdown headings (# Title, ## Title, etc.)')
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.excludeHeadings)
+				.onChange(async (value) => {
+					this.plugin.settings.excludeHeadings = value;
+					await this.plugin.saveSettings();
+				}));
+
 		// Recursive Folder Scan
 		new Setting(containerEl)
 			.setName('Recursive folder scanning')

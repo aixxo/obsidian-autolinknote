@@ -44,6 +44,10 @@ export interface AutoLinkSettings {
 	excludeCodeBlocks: boolean;
 	/** Whether to exclude URLs from scanning */
 	excludeUrls: boolean;
+	/** Whether to exclude frontmatter (YAML headers) from scanning */
+	excludeFrontmatter: boolean;
+	/** Whether to exclude headings from scanning */
+	excludeHeadings: boolean;
 	/** Whether to scan subfolders recursively when scanning a folder */
 	recursiveFolderScan: boolean;
 	/** Whether to show progress notifications during scanning */
@@ -61,6 +65,8 @@ export const DEFAULT_SETTINGS: AutoLinkSettings = {
 	wordBlacklist: [],
 	excludeCodeBlocks: true,
 	excludeUrls: true,
+	excludeFrontmatter: true,
+	excludeHeadings: false,
 	recursiveFolderScan: true,
 	showProgress: true
 };
