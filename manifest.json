@@ -1,7 +1,7 @@
 {
 	"id": "autolink-note",
 	"name": "AutoLink Note",
-	"version": "0.0.5",
+	"version": "0.1.0",
 	"minAppVersion": "0.15.0",
 	"description": "Find unlinked references to note names and aliases across your vault or specific folders, then create links automatically.",
 	"author": "okuhl",
