@@ -1,90 +1,97 @@
-# Obsidian Sample Plugin
+# AutoLink Note
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+An Obsidian plugin that automatically finds unlinked references to note names and aliases throughout your vault, allowing you to quickly create links between related notes.
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+## Features
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open modal (simple)" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+- **Flexible Scanning**: Scan your entire vault, select a specific folder, scan the current folder, or just the current note
+- **Alias Support**: Optionally include note aliases in the search
+- **Smart Filtering**: Filter matches by word length, exclude code blocks and URLs, and maintain a blacklist of common words
+- **Recursive Folder Scanning**: Control whether to scan subfolders when targeting specific folders
+- **Interactive Selection**: Review all potential links with context preview before applying them
+- **Batch Application**: Apply multiple links at once across different notes
+- **Case Sensitivity**: Choose between case-sensitive or case-insensitive matching
 
-## First time developing plugins?
+## Commands
 
-Quick starting guide for new plugin devs:
+The plugin provides four commands:
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+1. **AutoLink: Scan entire vault** - Scans all notes in your vault for unlinked references
+2. **AutoLink: Scan folder (select)** - Opens a folder picker to select which folder to scan
+3. **AutoLink: Scan current folder** - Scans notes in the same folder as the active note
+4. **AutoLink: Scan current note** - Scans only the currently active note
 
-## Releasing new releases
+## Usage
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+1. Open the command palette (`Ctrl/Cmd + P`)
+2. Type "AutoLink" and select one of the scan commands
+3. Wait for the scan to complete (progress is shown in a notice)
+4. Review the found matches in the selection modal
+5. Check the links you want to create
+6. Click "Apply Selected Links" to create the links in your notes
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+## Settings
 
-## Adding your plugin to the community plugin list
+Configure the plugin behavior in **Settings → AutoLink Note**:
 
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
+- **Case Sensitive**: Match note names with exact case
+- **Include Aliases**: Search for note aliases in addition to note names
+- **Minimum Word Length**: Only match words with at least this many characters
+- **Exclude Code Blocks**: Skip matches within code blocks
+- **Exclude URLs**: Skip matches within URLs
+- **Recursive Folder Scan**: Include subfolders when scanning specific folders
+- **Show Progress**: Display progress notifications during scanning
+- **Word Blacklist**: Comma-separated list of common words to ignore
+- **Exclude Folders**: Comma-separated list of folder paths to skip during scanning
 
-## How to use
+## Installation
 
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
+### Manual Installation
 
-## Manually installing the plugin
+1. Download `main.js`, `manifest.json`, and `styles.css` from the latest release
+2. Create a folder named `autolink-note` in your vault's `.obsidian/plugins/` directory
+3. Copy the downloaded files into the new folder
+4. Reload Obsidian
+5. Enable "AutoLink Note" in Settings → Community plugins
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+### Development Installation
 
-## Improve code quality with eslint
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- This project already has eslint preconfigured, you can invoke a check by running`npm run lint`
-- Together with a custom eslint [plugin](https://github.com/obsidianmd/eslint-plugin) for Obsidan specific code guidelines.
-- A GitHub action is preconfigured to automatically lint every commit on all branches.
+1. Clone this repository
+2. Run `npm install` to install dependencies
+3. Run `npm run dev` to start compilation in watch mode
+4. Copy `main.js`, `manifest.json`, and `styles.css` to your vault's `.obsidian/plugins/autolink-note/` directory
+5. Reload Obsidian and enable the plugin
 
-## Funding URL
+## Development
 
-You can include funding URLs where people who use your plugin can financially support it.
+```bash
+# Install dependencies
+npm install
 
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
+# Start development build (watch mode)
+npm run dev
 
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
+# Build for production
+npm run build
+
+# Lint code
+npm run lint
 ```
 
-If you have multiple URLs, you can also do:
+## How It Works
 
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
-```
+1. **Scanning**: The plugin collects notes based on your selected scope (vault/folder/current)
+2. **Indexing**: Builds an index of note names and aliases to search for
+3. **Matching**: Uses regex to find unlinked occurrences of note names in file contents
+4. **Sanitization**: Excludes existing links, code blocks, and URLs based on your settings
+5. **Selection**: Displays matches with surrounding context for user review
+6. **Application**: Replaces selected text with wiki-style links `[[note name]]`
 
-## API Documentation
+## Credits
 
-See https://docs.obsidian.md
+Inspired by [obsidian-note-linker](https://github.com/AlexW00/obsidian-note-linker) by AlexW00.
+
+## License
+
+MIT License - See LICENSE file for details.
+
