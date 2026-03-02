@@ -1,11 +1,10 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
-	"version": "1.0.0",
+	"id": "autolink-note",
+	"name": "AutoLink Note",
+	"version": "0.1.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "Find unlinked references to note names and aliases across your vault or specific folders, then create links automatically.",
+	"author": "okuhl",
+	"authorUrl": "",
 	"isDesktopOnly": false
 }
