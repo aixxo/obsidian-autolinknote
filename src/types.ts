@@ -40,6 +40,8 @@ export interface AutoLinkSettings {
 	excludeFolders: string[];
 	/** Words that should never be linked (blacklist) */
 	wordBlacklist: string[];
+	/** Tags that exclude files from processing (files with these tags are ignored) */
+	tagBlacklist: string[];
 	/** Whether to exclude code blocks from scanning */
 	excludeCodeBlocks: boolean;
 	/** Whether to exclude URLs from scanning */
@@ -63,6 +65,7 @@ export const DEFAULT_SETTINGS: AutoLinkSettings = {
 	minWordLength: 3,
 	excludeFolders: [],
 	wordBlacklist: [],
+	tagBlacklist: [],
 	excludeCodeBlocks: true,
 	excludeUrls: true,
 	excludeFrontmatter: true,
