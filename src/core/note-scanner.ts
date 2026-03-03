@@ -16,34 +16,44 @@ export class NoteScanner {
 		folderPath?: string,
 		recursive?: boolean
 	): TFile[] {
+		let files: TFile[];
+
 		switch (scope) {
-			case 'vault':
-				return this.getAllNotes();
+			case 'vault': {
+				files = this.getAllNotes();
+				break;
+			}
 			
-			case 'folder':
+			case 'folder': {
 				if (!folderPath) {
 					throw new Error('Folder path required for folder scope');
 				}
-				return this.getNotesInFolder(folderPath, recursive ?? this.settings.recursiveFolderScan);
+				files = this.getNotesInFolder(folderPath, recursive ?? this.settings.recursiveFolderScan);
+				break;
+			}
 			
-			case 'current-folder':
+			case 'current-folder': {
 				const activeFile = this.getActiveFile();
 				if (!activeFile) {
 					throw new Error('No active file');
 				}
 				const parentPath = FolderUtils.getFolderPath(activeFile);
-				return this.getNotesInFolder(parentPath, recursive ?? this.settings.recursiveFolderScan);
+				files = this.getNotesInFolder(parentPath, recursive ?? this.settings.recursiveFolderScan);
+				break;
+			}
 			
-			case 'current-note':
+			case 'current-note': {
 				const currentFile = this.getActiveFile();
 				if (!currentFile) {
 					throw new Error('No active file');
 				}
-				return [currentFile];
-			
-			default:
-				throw new Error(`Unknown scope: ${scope}`);
+				files = [currentFile];
+				break;
+			}
 		}
+
+		// Apply tag filtering before returning
+		return this.filterByTags(files);
 	}
 
 	/**
@@ -86,6 +96,58 @@ export class NoteScanner {
 		}
 
 		return [];
+	}
+
+	/**
+	 * Filters out files that have blacklisted tags
+	 */
+	filterByTags(files: TFile[]): TFile[] {
+		if (this.settings.tagBlacklist.length === 0) {
+			return files;
+		}
+
+		return files.filter(file => !this.hasBlacklistedTag(file));
+	}
+
+	/**
+	 * Checks if a file has any blacklisted tags
+	 */
+	private hasBlacklistedTag(file: TFile): boolean {
+		const cache = this.app.metadataCache.getFileCache(file);
+		if (!cache) {
+			return false;
+		}
+
+		// Normalize blacklist tags (remove # if present, lowercase)
+		const normalizedBlacklist = this.settings.tagBlacklist.map(tag => 
+			tag.replace(/^#/, '').toLowerCase()
+		);
+
+		// Check frontmatter tags
+		const frontmatterTags = cache.frontmatter?.tags;
+		if (frontmatterTags) {
+			const tagsArray = Array.isArray(frontmatterTags) 
+				? frontmatterTags 
+				: [frontmatterTags];
+			
+			if (tagsArray.some(tag => 
+				normalizedBlacklist.includes(String(tag).replace(/^#/, '').toLowerCase())
+			)) {
+				return true;
+			}
+		}
+
+		// Check inline tags
+		if (cache.tags) {
+			for (const tagObj of cache.tags) {
+				const tagName = tagObj.tag.replace(/^#/, '').toLowerCase();
+				if (normalizedBlacklist.includes(tagName)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	/**

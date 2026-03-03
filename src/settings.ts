@@ -1,5 +1,7 @@
 import { App, PluginSettingTab, Setting } from 'obsidian';
 import AutoLinkPlugin from './main';
+import { TagInput } from './ui/tag-input';
+import { FolderListInput } from './ui/folder-list';
 
 export class AutoLinkSettingTab extends PluginSettingTab {
 	plugin: AutoLinkPlugin;
@@ -120,33 +122,39 @@ export class AutoLinkSettingTab extends PluginSettingTab {
 				}));
 
 		// Word Blacklist
-		new Setting(containerEl)
-			.setName('Word blacklist')
-			.setDesc('Words that should never be linked (comma-separated)')
-			.addTextArea(text => text
-				.setPlaceholder('the, and, or, a, an')
-				.setValue(this.plugin.settings.wordBlacklist.join(', '))
-				.onChange(async (value) => {
-					this.plugin.settings.wordBlacklist = value
-						.split(',')
-						.map(w => w.trim())
-						.filter(w => w.length > 0);
-					await this.plugin.saveSettings();
-				}));
+		const wordBlacklistSetting = new Setting(containerEl)
+			.setName('Wort-Blacklist')
+			.setDesc('Wörter, die niemals verlinkt werden sollen');
+
+		const wordBlacklistContainer = wordBlacklistSetting.controlEl.createDiv();
+		const tagInput = new TagInput(wordBlacklistContainer, async (tags) => {
+			this.plugin.settings.wordBlacklist = tags;
+			await this.plugin.saveSettings();
+		});
+		tagInput.setValue(this.plugin.settings.wordBlacklist);
 
 		// Exclude Folders
-		new Setting(containerEl)
-			.setName('Exclude folders')
-			.setDesc('Folders to exclude from scanning (comma-separated paths)')
-			.addTextArea(text => text
-				.setPlaceholder('Templates, Archive')
-				.setValue(this.plugin.settings.excludeFolders.join(', '))
-				.onChange(async (value) => {
-					this.plugin.settings.excludeFolders = value
-						.split(',')
-						.map(f => f.trim())
-						.filter(f => f.length > 0);
-					await this.plugin.saveSettings();
-				}));
+		const excludeFoldersSetting = new Setting(containerEl)
+			.setName('Ausgeschlossene Ordner')
+			.setDesc('Ordner, die vom Scannen ausgeschlossen werden sollen');
+
+		const folderListContainer = excludeFoldersSetting.controlEl.createDiv();
+		const folderList = new FolderListInput(this.app, folderListContainer, async (folders) => {
+			this.plugin.settings.excludeFolders = folders;
+			await this.plugin.saveSettings();
+		});
+		folderList.setValue(this.plugin.settings.excludeFolders);
+
+		// Tag Blacklist
+		const tagBlacklistSetting = new Setting(containerEl)
+			.setName('Tag-Blacklist')
+			.setDesc('Tags, die Dateien vom Scannen ausschließen (Dateien mit diesen Tags werden ignoriert)');
+
+		const tagBlacklistContainer = tagBlacklistSetting.controlEl.createDiv();
+		const tagBlacklistInput = new TagInput(tagBlacklistContainer, async (tags) => {
+			this.plugin.settings.tagBlacklist = tags;
+			await this.plugin.saveSettings();
+		});
+		tagBlacklistInput.setValue(this.plugin.settings.tagBlacklist);
 	}
 }
