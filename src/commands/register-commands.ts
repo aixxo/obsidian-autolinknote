@@ -5,6 +5,8 @@ import { LinkSelectionModal } from '../ui/link-selection-modal';
 import { FolderSuggester } from '../ui/folder-suggester';
 import { ProgressNotice } from '../ui/progress-notice';
 import { AutoLinkSettings, LinkFinderResult } from '../types';
+import { registerRemoveLinkCommands } from './remove-link-commands';
+import AutoLinkPlugin from '../main';
 
 /**
  * Registers all plugin commands
@@ -61,6 +63,9 @@ export function registerCommands(plugin: Plugin & { settings: AutoLinkSettings }
 			await scanCurrentNote(plugin, file.path);
 		}
 	});
+
+	// Register link removal commands
+	registerRemoveLinkCommands(plugin as AutoLinkPlugin);
 }
 
 /**
