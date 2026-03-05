@@ -52,7 +52,8 @@ export class FolderListInput {
 
 		if (this.folders.length === 0) {
 			const emptyMsg = this.listContainerEl.createDiv('autolink-folder-empty');
-			emptyMsg.textContent = 'None';
+			// eslint-disable-next-line obsidianmd/ui/sentence-case
+			emptyMsg.textContent = 'none';
 			return;
 		}
 

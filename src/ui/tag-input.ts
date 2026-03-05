@@ -35,7 +35,8 @@ export class TagInput {
 			type: 'text',
 			cls: 'autolink-tag-input-field',
 			attr: {
-				placeholder: 'Add word'
+				// eslint-disable-next-line obsidianmd/ui/sentence-case
+				placeholder: 'add word'
 			}
 		});
 

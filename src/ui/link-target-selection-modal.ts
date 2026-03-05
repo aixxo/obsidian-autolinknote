@@ -18,7 +18,8 @@ export class LinkTargetSelectionModal extends FuzzySuggestModal<LinkTargetGroup>
 		this.groups = groups;
 		this.onChoose = onChoose;
 		
-		this.setPlaceholder('Search');
+		// eslint-disable-next-line obsidianmd/ui/sentence-case
+		this.setPlaceholder('search');
 	}
 
 	getItems(): LinkTargetGroup[] {
