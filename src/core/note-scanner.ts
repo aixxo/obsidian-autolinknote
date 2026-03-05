@@ -82,7 +82,7 @@ export class NoteScanner {
 	 */
 	getNoteAliases(file: TFile): string[] {
 		const cache = this.app.metadataCache.getFileCache(file);
-		const aliases = cache?.frontmatter?.aliases;
+		const aliases: unknown = cache?.frontmatter?.aliases;
 		
 		if (!aliases) {
 			return [];
@@ -124,7 +124,7 @@ export class NoteScanner {
 		);
 
 		// Check frontmatter tags
-		const frontmatterTags = cache.frontmatter?.tags;
+		const frontmatterTags: unknown = cache.frontmatter?.tags;
 		if (frontmatterTags) {
 			const tagsArray = Array.isArray(frontmatterTags) 
 				? frontmatterTags 

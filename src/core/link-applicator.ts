@@ -1,4 +1,4 @@
-import { App, Notice, TFile } from 'obsidian';
+import { App, Notice } from 'obsidian';
 import { LinkSelection } from '../types';
 
 /**

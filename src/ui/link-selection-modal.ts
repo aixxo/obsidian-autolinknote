@@ -1,4 +1,4 @@
-import { App, Modal, ButtonComponent, Setting } from 'obsidian';
+import { App, Modal, ButtonComponent } from 'obsidian';
 import { LinkFinderResult, LinkSelection, LinkMatch } from '../types';
 import { LinkApplicator } from '../core/link-applicator';
 import { ContentSanitizer } from '../utils/sanitizer';
@@ -70,7 +70,8 @@ export class LinkSelectionModal extends Modal {
 
 	private createHeader(container: HTMLElement): void {
 		const header = container.createDiv('autolink-modal-header');
-		header.createEl('h2', { text: 'AutoLink - Select Links to Apply' });
+		// eslint-disable-next-line
+		header.createEl('h2', { text: 'AutoLink - select links to apply' });
 		header.createEl('p', { text: `Scanned: ${this.scanInfo}` });
 	}
 
@@ -88,11 +89,11 @@ export class LinkSelectionModal extends Modal {
 		const toolbar = container.createDiv('autolink-toolbar');
 
 		new ButtonComponent(toolbar)
-			.setButtonText('Select All')
+			.setButtonText('Select all')
 			.onClick(() => this.selectAll(true));
 
 		new ButtonComponent(toolbar)
-			.setButtonText('Deselect All')
+			.setButtonText('Deselect all')
 			.onClick(() => this.selectAll(false));
 	}
 
@@ -112,7 +113,7 @@ export class LinkSelectionModal extends Modal {
 		const headerText = header.createEl('h3', { 
 			text: `${result.noteFile.basename} (${result.matches.length} match${result.matches.length === 1 ? '' : 'es'})` 
 		});
-		headerText.style.cursor = 'pointer';
+		headerText.addClass('clickable-header');
 
 		// Matches container
 		const matchesContainer = section.createDiv('autolink-matches-container');
@@ -132,7 +133,7 @@ export class LinkSelectionModal extends Modal {
 
 		// Create match items
 		result.matches.forEach((match, index) => {
-			this.createMatchItem(matchesContainer, result, match, index);
+			void this.createMatchItem(matchesContainer, result, match, index);
 		});
 	}
 
@@ -195,7 +196,7 @@ export class LinkSelectionModal extends Modal {
 		const buttonContainer = container.createDiv('autolink-apply-container');
 
 		new ButtonComponent(buttonContainer)
-			.setButtonText('Apply Selected Links')
+			.setButtonText('Apply selected links')
 			.setCta()
 			.onClick(() => this.applySelectedLinks());
 

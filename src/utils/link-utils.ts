@@ -5,7 +5,7 @@ import { ExtractedLink } from '../types';
  * Matches: [[Link]], [[Link|Alias]], [[Link#Heading]], [[Link#Heading|Alias]]
  * Captures the full link content (without outer brackets) in group 1
  */
-export const WIKI_LINK_REGEX = /\[\[([^\[\]]+)\]\]/g;
+export const WIKI_LINK_REGEX = /\[\[([^[\]]+)\]\]/g;
 
 /**
  * Extracts all wiki-style links from the given content

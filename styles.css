@@ -97,6 +97,12 @@
 	background: var(--background-modifier-hover);
 }
 
+/* Clickable header utility class */
+.clickable-header {
+	cursor: pointer;
+	user-select: none;
+}
+
 .autolink-matches-container {
 	margin-top: 10px;
 	padding-left: 10px;

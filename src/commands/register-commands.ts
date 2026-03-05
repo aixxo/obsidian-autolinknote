@@ -27,8 +27,10 @@ export function registerCommands(plugin: Plugin & { settings: AutoLinkSettings }
 		id: 'autolink-scan-folder-select',
 		name: 'Scan folder (choose from list)',
 		callback: async () => {
-			new FolderSuggester(plugin.app, async (folder) => {
-				await scanFolder(plugin, folder.path, plugin.settings.recursiveFolderScan);
+			new FolderSuggester(plugin.app, (folder) => {
+				void (async () => {
+					await scanFolder(plugin, folder.path, plugin.settings.recursiveFolderScan);
+				})();
 			}).open();
 		}
 	});
@@ -40,7 +42,7 @@ export function registerCommands(plugin: Plugin & { settings: AutoLinkSettings }
 		editorCallback: async (editor: Editor, view: MarkdownView) => {
 			const file = view.file;
 			if (!file) {
-				new Notice('❌ No active file');
+				new Notice('❌ no active file');
 				return;
 			}
 
@@ -56,7 +58,7 @@ export function registerCommands(plugin: Plugin & { settings: AutoLinkSettings }
 		editorCallback: async (editor: Editor, view: MarkdownView) => {
 			const file = view.file;
 			if (!file) {
-				new Notice('❌ No active file');
+				new Notice('❌ no active file');
 				return;
 			}
 
@@ -114,7 +116,7 @@ async function scanVault(plugin: Plugin & { settings: AutoLinkSettings }): Promi
 
 		// Show results
 		if (results.length === 0) {
-			new Notice('✅ No unlinked references found!');
+			new Notice('✅ no unlinked references found');
 			return;
 		}
 
@@ -125,7 +127,7 @@ async function scanVault(plugin: Plugin & { settings: AutoLinkSettings }): Promi
 			progress.dismiss();
 		}
 		console.error('Error scanning vault:', error);
-		new Notice('❌ Error scanning vault. Check console for details.');
+		new Notice('❌ error scanning vault - check console for details');
 	}
 }
 
@@ -184,7 +186,7 @@ async function scanFolder(
 
 		// Show results
 		if (results.length === 0) {
-			new Notice('✅ No unlinked references found!');
+			new Notice('✅ no unlinked references found');
 			return;
 		}
 
@@ -201,7 +203,7 @@ async function scanFolder(
 			progress.dismiss();
 		}
 		console.error('Error scanning folder:', error);
-		new Notice('❌ Error scanning folder. Check console for details.');
+		new Notice('❌ error scanning folder - check console for details');
 	}
 }
 
@@ -218,7 +220,7 @@ async function scanCurrentNote(
 	// Get the current markdown file
 	const currentFile = plugin.app.vault.getMarkdownFiles().find(f => f.path === filePath);
 	if (!currentFile) {
-		new Notice('❌ File not found or not a markdown file');
+		new Notice('❌ file not found or not a Markdown file');
 		return;
 	}
 
@@ -230,7 +232,7 @@ async function scanCurrentNote(
 		const result = await finder.findUnlinkedReferences(currentFile, allNotes);
 
 		if (result.matches.length === 0) {
-			new Notice('✅ No unlinked references found in current note!');
+			new Notice('✅ no unlinked references found in current note');
 			return;
 		}
 
@@ -243,6 +245,6 @@ async function scanCurrentNote(
 
 	} catch (error) {
 		console.error('Error scanning current note:', error);
-		new Notice('❌ Error scanning note. Check console for details.');
+		new Notice('❌ error scanning note - check console for details');
 	}
 }

@@ -14,7 +14,7 @@ export class ProgressNotice {
 		this.notice = new Notice('', 0);
 
 		// Build the notice content
-		const contentEl = this.notice.noticeEl;
+		const contentEl = this.notice.messageEl;
 		contentEl.empty();
 		contentEl.addClass('autolink-progress-notice');
 
@@ -25,7 +25,7 @@ export class ProgressNotice {
 		// Progress bar container
 		this.progressBarEl = contentEl.createDiv('autolink-progress-bar');
 		this.progressFillEl = this.progressBarEl.createDiv('autolink-progress-fill');
-		this.progressFillEl.style.width = '0%';
+		this.progressFillEl.setCssProps({ width: '0%' });
 	}
 
 	/**
@@ -33,7 +33,7 @@ export class ProgressNotice {
 	 */
 	update(current: number, total: number, currentItem?: string): void {
 		const percentage = total > 0 ? Math.round((current / total) * 100) : 0;
-		this.progressFillEl.style.width = `${percentage}%`;
+		this.progressFillEl.setCssProps({ width: `${percentage}%` });
 
 		let message = `Scanning... ${current}/${total} (${percentage}%)`;
 		if (currentItem) {

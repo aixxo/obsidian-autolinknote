@@ -35,7 +35,7 @@ export class TagInput {
 			type: 'text',
 			cls: 'autolink-tag-input-field',
 			attr: {
-				placeholder: 'Neues Wort hinzufügen...'
+				placeholder: 'Add word'
 			}
 		});
 

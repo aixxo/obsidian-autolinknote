@@ -18,7 +18,7 @@ export class LinkTargetSelectionModal extends FuzzySuggestModal<LinkTargetGroup>
 		this.groups = groups;
 		this.onChoose = onChoose;
 		
-		this.setPlaceholder('Link-Ziel suchen...');
+		this.setPlaceholder('Search');
 	}
 
 	getItems(): LinkTargetGroup[] {

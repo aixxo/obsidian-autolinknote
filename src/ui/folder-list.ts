@@ -42,7 +42,7 @@ export class FolderListInput {
 		const buttonContainer = this.containerEl.createDiv('autolink-folder-add-container');
 		
 		new ButtonComponent(buttonContainer)
-			.setButtonText('➕ Ordner hinzufügen')
+			.setButtonText('➕ add folder')
 			.setClass('autolink-folder-add-button')
 			.onClick(() => this.openFolderSuggester());
 	}
@@ -52,7 +52,7 @@ export class FolderListInput {
 
 		if (this.folders.length === 0) {
 			const emptyMsg = this.listContainerEl.createDiv('autolink-folder-empty');
-			emptyMsg.textContent = 'Keine ausgeschlossenen Ordner';
+			emptyMsg.textContent = 'None';
 			return;
 		}
 

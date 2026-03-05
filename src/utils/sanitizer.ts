@@ -31,13 +31,13 @@ export class ContentSanitizer {
 		// Remove existing wiki links [[...]]
 		// Handles: [[Link]], [[Link|Alias]], [[Link#Heading]], [[Link#Heading|Alias]]
 		// Replace with spaces to preserve positions and prevent re-linking inside links
-		sanitized = sanitized.replace(/\[\[([^\[\]]+)\]\]/g, (match) => {
+		sanitized = sanitized.replace(/\[\[([^[\]]+)\]\]/g, (match) => {
 			return ' '.repeat(match.length);
 		});
 
 		// Remove existing markdown links [text](url)
 		// Replace with spaces to preserve positions and prevent re-linking
-		sanitized = sanitized.replace(/\[([^\[\]]+)\]\(([^)]+)\)/g, (match) => {
+		sanitized = sanitized.replace(/\[([^[\]]+)\]\(([^)]+)\)/g, (match) => {
 			return ' '.repeat(match.length);
 		});
 
