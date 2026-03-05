@@ -177,3 +177,178 @@
 		width: 100%;
 	}
 }
+
+/* Replacement Text Section */
+.autolink-replacement-section {
+	padding: 15px;
+	background: var(--background-secondary);
+	border-radius: 5px;
+	margin-bottom: 15px;
+}
+
+.autolink-replacement-label {
+	display: block;
+	margin-bottom: 8px;
+	font-weight: 600;
+	color: var(--text-normal);
+}
+
+.autolink-replacement-input {
+	width: 100%;
+	padding: 10px 12px;
+	font-size: 15px;
+	min-height: 42px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 5px;
+	background: var(--background-primary);
+	color: var(--text-normal);
+	box-sizing: border-box;
+}
+
+.autolink-replacement-input:focus {
+	outline: none;
+	border-color: var(--interactive-accent);
+	box-shadow: 0 0 0 2px var(--interactive-accent-hover);
+}
+
+/* Tag Input Component */
+.autolink-tag-input {
+	width: 100%;
+}
+
+.autolink-tag-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	padding: 8px;
+	min-height: 42px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 5px;
+	background: var(--background-primary);
+	align-items: center;
+}
+
+.autolink-tag-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 4px 8px;
+	background: var(--interactive-accent);
+	color: var(--text-on-accent);
+	border-radius: 12px;
+	font-size: 13px;
+	line-height: 1.2;
+	transition: background 0.2s ease;
+}
+
+.autolink-tag-pill:hover {
+	background: var(--interactive-accent-hover);
+}
+
+.autolink-tag-text {
+	user-select: none;
+}
+
+.autolink-tag-remove {
+	cursor: pointer;
+	font-size: 18px;
+	line-height: 1;
+	font-weight: bold;
+	opacity: 0.8;
+	transition: opacity 0.2s ease;
+}
+
+.autolink-tag-remove:hover {
+	opacity: 1;
+}
+
+.autolink-tag-input-field {
+	flex: 1;
+	min-width: 150px;
+	border: none;
+	outline: none;
+	background: transparent;
+	padding: 4px;
+	font-size: 14px;
+	color: var(--text-normal);
+}
+
+.autolink-tag-input-field::placeholder {
+	color: var(--text-muted);
+	opacity: 0.6;
+}
+
+/* Folder List Component */
+.autolink-folder-list {
+	width: 100%;
+}
+
+.autolink-folder-list-container {
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 5px;
+	background: var(--background-primary);
+	max-height: 300px;
+	overflow-y: auto;
+	margin-bottom: 10px;
+}
+
+.autolink-folder-empty {
+	padding: 20px;
+	text-align: center;
+	color: var(--text-muted);
+	font-style: italic;
+}
+
+.autolink-folder-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 12px;
+	border-bottom: 1px solid var(--background-modifier-border);
+	transition: background 0.2s ease;
+}
+
+.autolink-folder-item:last-child {
+	border-bottom: none;
+}
+
+.autolink-folder-item:hover {
+	background: var(--background-modifier-hover);
+}
+
+.autolink-folder-path {
+	flex: 1;
+	font-family: var(--font-monospace);
+	font-size: 13px;
+	color: var(--text-normal);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.autolink-folder-remove {
+	flex-shrink: 0;
+	cursor: pointer;
+	font-size: 20px;
+	line-height: 1;
+	font-weight: bold;
+	color: var(--text-muted);
+	padding: 0 4px;
+	margin-left: 8px;
+	opacity: 0.6;
+	transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.autolink-folder-remove:hover {
+	opacity: 1;
+	color: var(--text-error);
+}
+
+.autolink-folder-add-container {
+	display: flex;
+	justify-content: flex-start;
+}
+
+.autolink-folder-add-button {
+	cursor: pointer;
+}

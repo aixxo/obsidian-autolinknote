@@ -40,6 +40,8 @@ export interface AutoLinkSettings {
 	excludeFolders: string[];
 	/** Words that should never be linked (blacklist) */
 	wordBlacklist: string[];
+	/** Tags that exclude files from processing (files with these tags are ignored) */
+	tagBlacklist: string[];
 	/** Whether to exclude code blocks from scanning */
 	excludeCodeBlocks: boolean;
 	/** Whether to exclude URLs from scanning */
@@ -63,6 +65,7 @@ export const DEFAULT_SETTINGS: AutoLinkSettings = {
 	minWordLength: 3,
 	excludeFolders: [],
 	wordBlacklist: [],
+	tagBlacklist: [],
 	excludeCodeBlocks: true,
 	excludeUrls: true,
 	excludeFrontmatter: true,
@@ -128,4 +131,68 @@ export interface NoteInfo {
 	basename: string;
 	aliases: string[];
 	searchTerms: string[]; // basename + aliases
+}
+
+// ============================================================================
+// Link Removal Types
+// ============================================================================
+
+/**
+ * Represents a wiki link extracted from content
+ */
+export interface ExtractedLink {
+	/** Full link text including brackets (e.g., "[[JavaScript]]" or "[[Note|Alias]]") */
+	fullLink: string;
+	/** Target note name (extracted from link, without brackets) */
+	targetNote: string;
+	/** Start position in the original content */
+	startPos: number;
+	/** End position in the original content */
+	endPos: number;
+}
+
+/**
+ * Result of extracting links from a single note
+ */
+export interface ExtractedLinkResult {
+	/** The note that was scanned */
+	noteFile: TFile;
+	/** All wiki links found in this note */
+	links: ExtractedLink[];
+}
+
+/**
+ * Grouped links by their target note name
+ */
+export interface LinkTargetGroup {
+	/** Target note name (e.g., "JavaScript") */
+	targetName: string;
+	/** Total number of occurrences across all files */
+	totalCount: number;
+	/** Number of files containing this link */
+	fileCount: number;
+	/** All occurrences of this link */
+	occurrences: LinkOccurrence[];
+}
+
+/**
+ * Single occurrence of a link with context
+ */
+export interface LinkOccurrence {
+	/** The file containing this link */
+	noteFile: TFile;
+	/** The extracted link data */
+	link: ExtractedLink;
+	/** Context snippet showing the link in surrounding text */
+	context: string;
+}
+
+/**
+ * User selection for link removal with replacement text
+ */
+export interface LinkRemovalSelection {
+	/** The occurrence to replace */
+	occurrence: LinkOccurrence;
+	/** Text to replace the link with */
+	replacementText: string;
 }
