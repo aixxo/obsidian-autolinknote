@@ -99,11 +99,36 @@ export interface SerializedNote {
 }
 
 /**
+ * Type guard to validate AutoLinkSettings at runtime
+ */
+export function isAutoLinkSettings(data: unknown): data is AutoLinkSettings {
+	if (!data || typeof data !== 'object') return false;
+	
+	const obj = data as Record<string, unknown>;
+	
+	// Validate all properties of AutoLinkSettings
+	return (
+		typeof obj.caseSensitive === 'boolean' &&
+		typeof obj.includeAliases === 'boolean' &&
+		typeof obj.minWordLength === 'number' &&
+		Array.isArray(obj.excludeFolders) &&
+		Array.isArray(obj.wordBlacklist) &&
+		Array.isArray(obj.tagBlacklist) &&
+		typeof obj.excludeCodeBlocks === 'boolean' &&
+		typeof obj.excludeUrls === 'boolean' &&
+		typeof obj.excludeFrontmatter === 'boolean' &&
+		typeof obj.excludeHeadings === 'boolean' &&
+		typeof obj.recursiveFolderScan === 'boolean' &&
+		typeof obj.showProgress === 'boolean'
+	);
+}
+
+/**
  * Worker message types
  */
 export interface WorkerMessage {
 	type: 'scan' | 'progress' | 'complete' | 'error';
-	data?: any;
+	data?: unknown;
 }
 
 /**

@@ -1,5 +1,5 @@
 import { Plugin } from 'obsidian';
-import { AutoLinkSettings, DEFAULT_SETTINGS } from './types';
+import { AutoLinkSettings, DEFAULT_SETTINGS, isAutoLinkSettings } from './types';
 import { AutoLinkSettingTab } from './settings';
 import { registerCommands } from './commands/register-commands';
 
@@ -19,15 +19,25 @@ export default class AutoLinkPlugin extends Plugin {
 		// Add settings tab
 		this.addSettingTab(new AutoLinkSettingTab(this.app, this));
 
-		console.log('AutoLink plugin loaded');
+		console.debug('AutoLink plugin loaded');
 	}
 
 	onunload() {
-		console.log('AutoLink plugin unloaded');
+		console.debug('AutoLink plugin unloaded');
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		const data: unknown = await this.loadData();
+		
+		if (isAutoLinkSettings(data)) {
+			this.settings = Object.assign({}, DEFAULT_SETTINGS, data);
+		} else {
+			// Fallback to defaults if data is invalid
+			this.settings = { ...DEFAULT_SETTINGS };
+			if (data !== null) {
+				console.warn('Invalid settings data loaded, using defaults');
+			}
+		}
 	}
 
 	async saveSettings() {
